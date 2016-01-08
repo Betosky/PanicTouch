@@ -5,6 +5,8 @@
     <string name="selecciona_una_opcion">Selecciona una opción</string>
     <string name="title_facebook">Facebook Login</string>
     <string name="title_mensaje">Mensaje</string>
+    <string name="hint_numero">Ingrese número telefónico</string>
+    <string name="hint_msje">Ingrese su mensaje de ayuda</string>
     <string name="title_twitter">Twitter</string>
     <string name="hello">Hello,</string>
     <string name="login_label">Login to Twitter</string>
