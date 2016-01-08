@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Introduce una gesture"
+        android:textSize="8pt"
+        android:layout_margin="10dip"/>
+    <TextView
+        android:id="@+id/salida"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <android.gesture.GestureOverlayView
+        android:id="@+id/gestures"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gestureStrokeType="multiple"
+        android:fadeOffset="800"/>
+</LinearLayout>
