@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private TextView lblEtiqueta;
     private ListView lstOpciones;
@@ -82,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
                         //pasarAWhatsApp(v);
                         break;
                     case 4:
-                        //pasarATwitter(v);
+                        pasarATwitter(v);
                         break;
                     case 5:
                         pasarAGesture(v);
@@ -96,10 +97,10 @@ public void pasarAFacebook(View v){
     Intent act = new Intent(this, Facebook.class);
     startActivity(act);
 }
-    //public void pasarATwitter(View v){
-        //Intent act = new Intent(this, Twitter2.class);
-        //startActivity(act);
-    //}
+    public void pasarATwitter(View v){
+        Intent act = new Intent(this, Tweeter.class);
+        startActivity(act);
+    }
     public void pasarAMensaje(View v){
         Intent act = new Intent(this, Mensaje.class);
         startActivity(act);
