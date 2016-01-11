@@ -79,6 +79,14 @@
             android:name=".WebViewActivity"
             android:label="@string/title_activity_web_view" >
         </activity>
+        <receiver android:name=".MiWidget" android:label="Panic">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@layout/miwidget_wprovider" />
+        </receiver>
 
     </application>
 
