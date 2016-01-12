@@ -53,6 +53,7 @@ public class Tweeter extends Activity implements View.OnClickListener{
     private String consumerSecret = null;
     private String callbackUrl = null;
     private String oAuthVerifier = null;
+    private String posting= "Auxilio";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,8 +195,7 @@ public class Tweeter extends Activity implements View.OnClickListener{
                 loginLayout.setVisibility(View.GONE);
                 shareLayout.setVisibility(View.VISIBLE);
 
-                userName.setText(Tweeter.this.getResources().getString(R.string.hello)
-                        + " " +username);
+                userName.setText(Tweeter.this.getResources().getString(R.string.hello) + " " +username);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -222,6 +222,15 @@ public class Tweeter extends Activity implements View.OnClickListener{
                 break;
         }
     }
+    public void post(){
+         final String status = shareEditText.getText().toString();
+         if(status.trim().length() > 0) {
+           new updateTwitterStatus().execute(status);
+         } else {
+             new updateTwitterStatus().execute(status);
+            Toast.makeText(this, "Message is empty!!", Toast.LENGTH_SHORT).show();
+         }
+        }
 
     class updateTwitterStatus extends AsyncTask<String, String, Void> {
 
