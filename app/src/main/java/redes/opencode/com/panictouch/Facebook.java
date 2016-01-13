@@ -48,7 +48,6 @@ public class Facebook extends AppCompatActivity {
                         } else {
                             Toast.makeText(Facebook.this, "Sesion Cerrada", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 };
             }

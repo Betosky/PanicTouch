@@ -18,6 +18,7 @@ public class Mensaje extends AppCompatActivity {
     private EditText msje;
     private Button btnMsje;
     private Button buttonReadContact;
+
     //private TextView textPhone;
     private TextView estado;
     private String contacto = "";
@@ -28,6 +29,7 @@ public class Mensaje extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensaje);
+        preferencias datos = new preferencias(this);
 
         //nFono = (EditText)findViewById(R.id.editText);
         msje = (EditText)findViewById(R.id.editText2);
