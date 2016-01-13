@@ -14,19 +14,21 @@ import redes.opencode.com.panictouch.MiWidget;
 import redes.opencode.com.panictouch.R;
 import java.lang.Override;
 
+import static redes.opencode.com.panictouch.Mensaje.getState;
+import static redes.opencode.com.panictouch.Mensaje.getNumTel;
+
+
 public class WidgetConfig extends Activity {
-	 
+
 	private Button btnAceptar;
 	private Button btnCancelar;
-	private EditText txtMensaje;
-	
+
     private int widgetId = 0;
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_config);
- 
         //Obtenemos el Intent que ha lanzado esta ventana
         //y recuperamos sus par�metros
         Intent intentOrigen = getIntent();
@@ -44,7 +46,7 @@ public class WidgetConfig extends Activity {
         //Obtenemos la referencia a los controles de la pantalla
         btnAceptar = (Button)findViewById(R.id.BtnAceptar);
         btnCancelar = (Button)findViewById(R.id.BtnCancelar);
-        txtMensaje = (EditText)findViewById(R.id.TxtMensaje);
+        //txtMensaje = (EditText)findViewById(R.id.TxtMensaje);
         
         //Implementaci�n del bot�n "Cancelar"
         btnCancelar.setOnClickListener(new OnClickListener() {
@@ -60,12 +62,15 @@ public class WidgetConfig extends Activity {
                 @Override
                 public void onClick(View arg0) {
                     //Guardamos el mensaje personalizado en las preferencias
+                    //String sms = Mensaje.getState();
+                    String num = Mensaje.getNumTel();
                     SharedPreferences prefs =
                         getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("msg_" + widgetId, txtMensaje.getText().toString());
-                    editor.commit();
-         
+
+                        editor.putString("msg_" + widgetId, "Enviar alerta a: " + num);
+                        editor.commit();
+
                     //Actualizamos el widget tras la configuraci�n
                     AppWidgetManager appWidgetManager =
                         AppWidgetManager.getInstance(WidgetConfig.this);

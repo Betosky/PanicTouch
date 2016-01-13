@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private Titular[] datos =
             new Titular[]{
                     new Titular("Mensaje de Ayuda", "Configura el mensaje de ayuda"),
-                    new Titular("Conecta con Facebook", "Publica en tu muro"),
-                    new Titular("Alerta por WhatsApp", "Envia el Mensaje a quienes quieras"),
                     new Titular("Conecta con Tweeter", "Postea un tweet"),
-                    new Titular("Gesto", "Prueba un gesto"),
+                    //new Titular("Alerta por WhatsApp", "Envia el Mensaje a quienes quieras"),
+                    //new Titular("Conecta con Facebook", "Publica en tu muro"),
+                    //new Titular("Gesto", "Prueba un gesto"),
             };
 
     @Override
@@ -91,16 +91,16 @@ public class MainActivity extends AppCompatActivity {
                         pasarAMensaje(v);
                         break;
                     case 2:
-                        pasarAFacebook(v);
+                        pasarATwitter(v);
                         break;
                     case 3:
                         //pasarAWhatsApp(v);
                         break;
                     case 4:
-                        pasarATwitter(v);
+                        //pasarAFacebook(v);
                         break;
                     case 5:
-                        pasarAGesture(v);
+                        //pasarAGesture(v);
                         break;
                 }
                 //lblEtiqueta.setText("Opción seleccionada: " + opcionSeleccionada + position);

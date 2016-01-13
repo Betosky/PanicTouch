@@ -23,10 +23,10 @@ public class Mensaje extends AppCompatActivity {
     private Button buttonReadContact;
     private Button guardar;
     private Button cargar;
-    //private TextView textPhone;
     private TextView estado;
     private String contacto = "";
-    public String state= "";
+    public static String state= "";
+    public static String numTel= "";
 
     final int RQS_PICKCONTACT = 1;
 
@@ -41,10 +41,12 @@ public class Mensaje extends AppCompatActivity {
         buttonReadContact = (Button)findViewById(R.id.readcontact);
         //textPhone = (TextView)findViewById(R.id.phone);
         estado = (TextView)findViewById(R.id.textView3);
+        setCargar();
         state= msje.toString();
         btnMsje = (Button)findViewById(R.id.btnMsje);
         guardar = (Button)findViewById(R.id.guardar);
         cargar = (Button)findViewById(R.id.cargar);
+
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +77,7 @@ public class Mensaje extends AppCompatActivity {
 
                 try{
                     if(contacto!=null){
-                        sendSMS(contacto,sms);
+                        sendSMS(numTel,sms);
                         Toast.makeText(getApplicationContext(), "SMS enviado",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -92,27 +94,30 @@ public class Mensaje extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             state = msje.getText().toString();
-            editor.putString("mensaje", state);
-            editor.putString("contacto", contacto);
+        editor.putString("mensaje", state);
+        editor.putString("contacto", numTel);
 
-
-            editor.commit();
-            estado.setText("Mensaje: " + state + "\n Numero: " + contacto);
+        editor.commit();
+        estado.setText("Mensaje: " + state + "\nNumero: " + numTel);
     }
 
     public void setCargar(){
            //Recuperamos las preferencias
             SharedPreferences prefs =getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
             String mensaje = prefs.getString("mensaje", state);
-            String contact = prefs.getString("contacto", contacto);
+            String contact = prefs.getString("contacto", numTel);
 
             //estado.setText(state);
-          //  Log.i("Preferences", "Mensaje: " + mensaje);                ;
-            msje.setText(prefs.getString("Mensaje: ", mensaje));
-            estado.setText(prefs.getString("Contacto: ", contact));
+          //  Log.i("Preferences", "Mensaje: " + mensaje);               ;
+        msje.setText(prefs.getString("Mensaje: ", mensaje));
+        estado.setText(prefs.getString("Contacto: ", contact));
         }
-    public String getState(){
+
+    public static String getState(){
         return state;
+    }
+    public static String getNumTel(){
+        return numTel;
     }
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,9 +146,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                     if(cursorNum.moveToNext()){
                         int columnIndex_number = cursorNum.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                         String stringNumber = cursorNum.getString(columnIndex_number);
-                        this.contacto = stringNumber;
+                        this.numTel = stringNumber;
                         //textPhone.setText(stringNumber);
-                        estado.setText("Su mensaje de ayuda será enviado a: " + stringNumber);
+                        estado.setText("Su mensaje de ayuda será enviado a: " + this.numTel);
                     }
 
                 }else{
@@ -158,8 +163,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 
-
-private void sendSMS (String phoneNumber, String message) {
+public static void sendSMS (String phoneNumber, String message) {
     SmsManager sms = SmsManager.getDefault();
     sms.sendTextMessage(phoneNumber,null,message,null,null);
 }

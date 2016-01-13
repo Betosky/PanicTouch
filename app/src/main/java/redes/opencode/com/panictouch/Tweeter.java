@@ -29,6 +29,8 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+import static redes.opencode.com.panictouch.Mensaje.getState;
+
 public class Tweeter extends Activity implements View.OnClickListener{
 
     private static final String PREF_NAME = "sample_twitter_pref";
@@ -55,7 +57,7 @@ public class Tweeter extends Activity implements View.OnClickListener{
     private String consumerSecret = null;
     private String callbackUrl = null;
     private String oAuthVerifier = null;
-    private String posting= "Auxilio";
+    private String posting= Mensaje.getState();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,9 +213,9 @@ public void panicT(){
             case R.id.btn_login :
                 loginToTwitter();
                 break;
-            case R.id.PanicTouch:
+            case R.id.btn_share:
                 setCargar();
-                final String status = shareTxt.getText().toString();
+                final String status = this.posting;
                 new updateTwitterStatus().execute(status);
                break;
         }

@@ -25,7 +25,7 @@
 
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
-    <string name="mensaje_personalizado">Mensaje personalizado</string>
+    <string name="mensaje_personalizado">Presione Aceptar para crear un PanicTouch</string>
     <string name="panic_widget">Panic Widget</string>
 
 </resources>

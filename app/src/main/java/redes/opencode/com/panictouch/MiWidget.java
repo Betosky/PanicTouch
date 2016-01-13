@@ -11,6 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
+import android.widget.Toast;
+
+import static redes.opencode.com.panictouch.Mensaje.getState;
+import static redes.opencode.com.panictouch.Mensaje.getNumTel;
+import static redes.opencode.com.panictouch.Mensaje.sendSMS;
 
 public class MiWidget extends AppWidgetProvider {
     @Override
@@ -76,6 +81,13 @@ public class MiWidget extends AppWidgetProvider {
                                         AppWidgetManager appWidgetManager, int widgetId)
     {
         //Recuperamos el mensaje personalizado para el widget actual
+
+        String sms = Mensaje.getState();
+        String num = Mensaje.getNumTel();
+
+        if(num.equals("")) {
+            Toast.makeText(context, "Sleccione contacto para enviar alertas", Toast.LENGTH_LONG).show();
+        }
         SharedPreferences prefs =
                 context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
         String mensaje = prefs.getString("msg_" + widgetId, "Hora actual:");
@@ -102,7 +114,19 @@ public class MiWidget extends AppWidgetProvider {
         controles.setOnClickPendingIntent(R.id.FrmWidget, pendingIntent2);
 
         //Actualizamos el mensaje en el control del widget
-        controles.setTextViewText(R.id.LblMensaje, mensaje);
+        controles.setTextViewText(R.id.LblMensaje, mensaje + ". Sms: " + sms);
+
+        try{
+            if(num!=null){
+                Mensaje.sendSMS(num, sms);
+                Toast.makeText(context, "SMS enviado",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e){
+            Toast.makeText(context,"SMS fallido. El mensaje no ha sido enviado",
+                    Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
 
         //Obtenemos la hora actual
         Calendar calendario = new GregorianCalendar();
@@ -113,6 +137,7 @@ public class MiWidget extends AppWidgetProvider {
 
         //Notificamos al manager de la actualizaci�n del widget actual
         appWidgetManager.updateAppWidget(widgetId, controles);
+
     }
 
 }
