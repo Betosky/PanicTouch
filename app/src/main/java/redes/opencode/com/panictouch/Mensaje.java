@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class Mensaje extends AppCompatActivity {
     //private EditText nFono;
     private EditText msje;
-    private Button btnMsje;
+    public Button btnMsje;
     private Button buttonReadContact;
     private Button guardar;
     private Button cargar;

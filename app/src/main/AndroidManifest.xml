@@ -68,6 +68,23 @@
             android:label="@string/title_activity_web_view" >
         </activity>
 
+        <activity android:name="redes.opencode.com.panictouch.WidgetConfig">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".MiWidget" android:label="Panic Widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="redes.opencode.com.panictouch.ACTUALIZAR_WIDGET"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/miwidget_wprovider" />
+        </receiver>
     </application>
 
 </manifest>

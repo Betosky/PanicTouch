@@ -21,5 +21,11 @@
     <string name="title_activity_web_view">WebViewActivity</string>
 
     <string name="title_whatsapp">WhatsApp</string>
+    <string name="actualizar">Actualizar</string>
+
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="mensaje_personalizado">Mensaje personalizado</string>
+    <string name="panic_widget">Panic Widget</string>
 
 </resources>

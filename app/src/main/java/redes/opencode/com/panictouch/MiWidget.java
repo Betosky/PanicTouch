@@ -1,48 +1,118 @@
 package redes.opencode.com.panictouch;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import android.app.Application;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 public class MiWidget extends AppWidgetProvider {
-    private Context applicationContext;
-    public Integer ent = 1;
-
     @Override
-    public void onUpdate(Context context,
-                 AppWidgetManager appWidgetManager,
-                 int[] appWidgetIds) {
-                    for(int i=0; i<appWidgetIds.length; i++){
-                        int currentWidgetId = appWidgetIds[i];
-                         String url = "http://www.tutorialspoint.com";
-            Tweeter a = new Tweeter();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            a.post();
+        public void onUpdate(Context context,
+                             AppWidgetManager appWidgetManager,
+                             int[] appWidgetIds) {
+            //Actualizar el widget
+            //...
+        for (int i = 0; i < appWidgetIds.length; i++)
+        {
+            //ID del widget actual
+            int widgetId = appWidgetIds[i];
 
-            PendingIntent pending = PendingIntent.getActivity(context, 0,intent, 0);
-
-            RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.miwidget);
-
-            views.setOnClickPendingIntent(R.id.button, pending);
-            appWidgetManager.updateAppWidget(currentWidgetId, views);
-            Toast.makeText(context, "widget added", Toast.LENGTH_SHORT).show();
-
-            Toast.makeText(context, "Message is empty!!", Toast.LENGTH_SHORT).show();
+            //Actualizamos el widget actual
+            actualizarWidget(context, appWidgetManager, widgetId);
         }
     }
-    public void onClick(Context context, AppWidgetManager appWidgetManager){
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals("redes.opencode.com.panictouch.ACTUALIZAR_WIDGET")) {
+
+            //Obtenemos el ID del widget a actualizar
+            int widgetId = intent.getIntExtra(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+
+            //Obtenemos el widget manager de nuestro contexto
+            AppWidgetManager widgetManager =
+                    AppWidgetManager.getInstance(context);
+
+            //Actualizamos el widget
+            if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                actualizarWidget(context, widgetManager, widgetId);
+            }
+        }
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds)
+    {
+        //Accedemos a las preferencias de la aplicaci�n
+        SharedPreferences prefs =
+                context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
 
-    public Context getApplicationContext() {
+        //Eliminamos las preferencias de los widgets borrados
+        for(int i=0; i<appWidgetIds.length; i++)
+        {
+            //ID del widget actual
+            int widgetId = appWidgetIds[i];
 
-        return applicationContext;
+            editor.remove("msg_" + widgetId);
+        }
+
+        //Aceptamos los cambios
+        editor.commit();
+
+        super.onDeleted(context, appWidgetIds);
     }
+
+    public static void actualizarWidget(Context context,
+                                        AppWidgetManager appWidgetManager, int widgetId)
+    {
+        //Recuperamos el mensaje personalizado para el widget actual
+        SharedPreferences prefs =
+                context.getSharedPreferences("WidgetPrefs", Context.MODE_PRIVATE);
+        String mensaje = prefs.getString("msg_" + widgetId, "Hora actual:");
+
+        //Obtenemos la lista de controles del widget actual
+        RemoteViews controles =
+                new RemoteViews(context.getPackageName(), R.layout.miwidget);
+
+        //Asociamos los 'eventos' al widget
+        Intent intent = new Intent("redes.opencode.com.panictouch.ACTUALIZAR_WIDGET");
+        intent.putExtra(
+                AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context, widgetId,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        controles.setOnClickPendingIntent(R.id.BtnActualizar, pendingIntent);
+
+        Intent intent2 = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent2 =
+                PendingIntent.getActivity(context, widgetId,
+                        intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        controles.setOnClickPendingIntent(R.id.FrmWidget, pendingIntent2);
+
+        //Actualizamos el mensaje en el control del widget
+        controles.setTextViewText(R.id.LblMensaje, mensaje);
+
+        //Obtenemos la hora actual
+        Calendar calendario = new GregorianCalendar();
+        String hora = calendario.getTime().toLocaleString();
+
+        //Actualizamos la hora en el control del widget
+        controles.setTextViewText(R.id.LblHora, hora);
+
+        //Notificamos al manager de la actualizaci�n del widget actual
+        appWidgetManager.updateAppWidget(widgetId, controles);
+    }
+
 }

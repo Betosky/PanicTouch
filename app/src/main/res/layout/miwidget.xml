@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="75dp"
-    android:layout_height="90dp"
-    android:layout_gravity="right"
-    android:padding="10dp" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="10dp"
     android:layout_margin="5dp" >
 
-    <FrameLayout android:id="@+id/frmWidget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/boton2"
+    <LinearLayout android:id="@+id/FrmWidget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:padding="5dp"
-        android:layout_gravity="left|center_vertical">
-    </FrameLayout>
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/LblMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="" />
+
+        <TextView android:id="@+id/LblHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="" />
+
+        <ImageButton android:id="@+id/BtnActualizar"
+            android:src="@mipmap/panic_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="@string/actualizar" />
+
+    </LinearLayout>
 
 </FrameLayout>
