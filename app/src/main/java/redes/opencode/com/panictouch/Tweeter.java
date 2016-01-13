@@ -3,6 +3,7 @@ package redes.opencode.com.panictouch;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,7 +50,7 @@ public class Tweeter extends Activity implements View.OnClickListener{
     private TextView userName;
     private View loginLayout;
     private View shareLayout;
-
+    private EditText shareTxt;
     private String consumerKey = null;
     private String consumerSecret = null;
     private String callbackUrl = null;
@@ -68,7 +70,9 @@ public class Tweeter extends Activity implements View.OnClickListener{
 
         loginLayout = findViewById(R.id.login_layout);
         shareLayout = findViewById(R.id.share_layout);
-        shareEditText = (EditText) findViewById(R.id.share_text);
+        shareTxt = (EditText) findViewById(R.id.share_text);
+
+
         userName = (TextView) findViewById(R.id.user_name);
 
         findViewById(R.id.btn_login).setOnClickListener(this);
@@ -119,6 +123,13 @@ public class Tweeter extends Activity implements View.OnClickListener{
             }
         }
     }
+    public void setCargar(){
+        //Recuperamos las preferencias
+        SharedPreferences prefs =getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        String mensaje = prefs.getString("mensaje", "");
+        Log.i("Preferences", "Mensaje: " + mensaje);                ;
+        shareTxt.setText(prefs.getString("Mensaje: ", mensaje));
+    }
 
     private void initTwitterConfigs() {
         consumerKey = getString(R.string.twitter_consumer_key);
@@ -128,40 +139,30 @@ public class Tweeter extends Activity implements View.OnClickListener{
     }
 
     private void saveTwitterInfo(AccessToken accessToken) {
-
         long userId = accessToken.getUserId();
-
         User user;
         try {
-
             user = twitter.showUser(userId);
             String username = user.getName();
-
             SharedPreferences.Editor e = sharedPreferences.edit();
             e.putString(PREF_KEY_OAUTH_TOKEN, accessToken.getToken());
             e.putString(PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret());
             e.putBoolean(PREF_KEY_TWITTER_LOGIN, true);
             e.putString(PREF_USER_NAME, username);
             e.commit();
-
         } catch (TwitterException e) {
             e.printStackTrace();
         }
     }
-
     private void loginToTwitter() {
-
         boolean isLoggedIn = sharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
-
         if(!isLoggedIn) {
             final ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey(consumerKey);
             builder.setOAuthConsumerSecret(consumerSecret);
-
             final Configuration configuration = builder.build();
             final TwitterFactory factory = new TwitterFactory(configuration);
             twitter = factory.getInstance();
-
             try {
                 requestToken = twitter.getOAuthRequestToken(callbackUrl);
 
@@ -179,19 +180,14 @@ public class Tweeter extends Activity implements View.OnClickListener{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if(resultCode == Activity.RESULT_OK) {
             String verifier = data.getExtras().getString(oAuthVerifier);
-
             try {
                 AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
-
                 long userId = accessToken.getUserId();
                 final User user = twitter.showUser(userId);
                 String username = user.getName();
-
-                saveTwitterInfo(accessToken);
-
+               saveTwitterInfo(accessToken);
                 loginLayout.setVisibility(View.GONE);
                 shareLayout.setVisibility(View.VISIBLE);
 
@@ -204,33 +200,24 @@ public class Tweeter extends Activity implements View.OnClickListener{
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+public void panicT(){
+    setCargar();
+    final String status = shareTxt.getText().toString();
+    new updateTwitterStatus().execute(status);
+}
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login :
                 loginToTwitter();
                 break;
-            case R.id.btn_share:
-                final String status = shareEditText.getText().toString();
-
-                if(status.trim().length() > 0) {
-                    new updateTwitterStatus().execute(status);
-                } else {
-                    Toast.makeText(this, "Message is empty!!", Toast.LENGTH_SHORT).show();
-                }
-                break;
+            case R.id.PanicTouch:
+                setCargar();
+                final String status = shareTxt.getText().toString();
+                new updateTwitterStatus().execute(status);
+               break;
         }
     }
-    public void post(){
-         final String status = shareEditText.getText().toString();
-         if(status.trim().length() > 0) {
-           new updateTwitterStatus().execute(status);
-         } else {
-             new updateTwitterStatus().execute(status);
-            Toast.makeText(this, "Message is empty!!", Toast.LENGTH_SHORT).show();
-         }
-        }
 
     class updateTwitterStatus extends AsyncTask<String, String, Void> {
 
@@ -254,34 +241,22 @@ public class Tweeter extends Activity implements View.OnClickListener{
                 ConfigurationBuilder builder = new ConfigurationBuilder();
                 builder.setOAuthConsumerKey(consumerKey);
                 builder.setOAuthConsumerSecret(consumerSecret);
-
                 String access_token = sharedPreferences.getString(PREF_KEY_OAUTH_TOKEN, "");
                 String acces_token_secret = sharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
-
                 AccessToken accessToken = new AccessToken(access_token, acces_token_secret);
-
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
-
                 StatusUpdate statusUpdate = new StatusUpdate(status);
-                InputStream is = getResources().openRawResource(+R.mipmap.landscape);
-                statusUpdate.setMedia("test.jpg", is);
-
                 twitter4j.Status response = twitter.updateStatus(statusUpdate);
 
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
-
         @Override
         protected void onPostExecute(Void aVoid) {
-
             pDialog.dismiss();
-
             Toast.makeText(Tweeter.this, "Posted to Twitter!", Toast.LENGTH_SHORT);
-
             shareEditText.setText("");
         }
     }

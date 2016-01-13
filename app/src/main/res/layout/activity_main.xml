@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="340dp" />
 
-    <ImageButton
+    <Button
         android:id="@+id/PanicTouch"
         android:layout_width="120dp"
         android:layout_height="140dp"

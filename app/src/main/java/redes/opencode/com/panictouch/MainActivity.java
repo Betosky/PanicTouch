@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView lblEtiqueta;
     private ListView lstOpciones;
+    private Button panic;
+    private Tweeter t = new Tweeter();
+
 
     private Titular[] datos =
             new Titular[]{
@@ -34,11 +39,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        panic = (Button)findViewById(R.id.PanicTouch);
+        panic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            panic();
+            }
+        });
+
         //Ejemplo básico
         //final String[] datos =
         //        new String[]{"Elem1","Elem2","Elem3","Elem4","Elem5"};
         //
-        //ArrayAdapter<String> adaptador =
+        //ArrayAdapter<String> ad
+        // aptador =
         //        new ArrayAdapter<String>(this,
         //                android.R.layout.simple_list_item_1, datos);
         //
@@ -93,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-public void pasarAFacebook(View v){
+    public void panic (){
+        t.panicT();
+    }
+ public void pasarAFacebook(View v){
     Intent act = new Intent(this, Facebook.class);
     startActivity(act);
 }

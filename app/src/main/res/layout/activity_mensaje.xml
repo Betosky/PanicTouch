@@ -12,27 +12,26 @@
         android:layout_height="wrap_content"
         android:text="Enviar"
         android:id="@+id/btnMsje"
-        android:layout_below="@+id/editText2"
+        android:layout_alignTop="@+id/cargar"
         android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2"
-        android:layout_marginTop="47dp" />
+        android:layout_alignEnd="@+id/editText2" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seleccionar Contacto:"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mensaje de ayuda:"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView2"
         android:layout_below="@+id/readcontact"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -45,7 +44,6 @@
         android:hint="@string/hint_msje"
         android:inputType="textMultiLine"
         android:lines="5"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView2"
         android:layout_alignParentRight="true" />
     <Button
@@ -58,10 +56,28 @@
         android:layout_alignParentStart="true" />
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
         android:layout_below="@+id/editText2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="guardar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/cargar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cargar"
+        android:layout_alignTop="@+id/guardar"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 </RelativeLayout>
